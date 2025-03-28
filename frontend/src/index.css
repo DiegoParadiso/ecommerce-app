@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+    font-family: Menlo, Monaco, Lucida Console, "Courier New", Courier, monospace;
+  }
+
+  a hr {
+    visibility: hidden;
+    opacity: 0;
+}
+
+a.active hr {
+    visibility: visible;
+    opacity: 1;
+}
