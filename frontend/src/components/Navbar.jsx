@@ -8,20 +8,20 @@ const Navbar = () => {
 
   return (
 <div className="flex items-center justify-between py-5 font-medium min-h-[60px]">
-<NavLink to='/'><img src={assets.logo} className='w-36' alt="" /></NavLink>
+<Link to='/'><img src={assets.logo} className='w-36' alt="" /></Link>
 
         <ul className='hidden sm:flex gap-5 text-sm text-gray-700 '>
           <NavLink to='/collection' className='flex flex-col items-center gap-1 '>
             <p>TIENDA</p>
-            <hr className='w-2/4 border-none h-[1.5px] bg-gray-700 '></hr>
+            <hr className='w-2/4 border-none h-[1px] bg-gray-700 '></hr>
           </NavLink>
           <NavLink to='/about' className='flex flex-col items-center gap-1'>
             <p>NOSOTROS</p>
-            <hr className='w-2/4 border-none h-[1.5px] bg-gray-700 '></hr>
+            <hr className='w-2/4 border-none h-[1px] bg-gray-700 '></hr>
           </NavLink>
           <NavLink to='/contact' className='flex flex-col items-center gap-1'>
             <p>CONTACTO</p>
-            <hr className='w-2/4 border-none h-[1.5px] bg-gray-700 '></hr>
+            <hr className='w-2/4 border-none h-[1px] bg-gray-700 '></hr>
           </NavLink>
         </ul>
 
