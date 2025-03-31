@@ -95,9 +95,9 @@ const Collection = () => {
       </div>
       
       {/* Products List */}
-      <div className="flex-1">
-        <div className="flex justify-between pt-4 mb-4">
-          <Title text1={'LISTA DE'} text2={'PRODUCTOS'} />
+      <div className="flex-1 ">
+        <div className="flex justify-between pt-4 mb-4 ">
+          <Title  text1={'LISTA DE'} text2={'PRODUCTOS'} />
           { /* Products Sorts */}
           <select onChange={(e)=>setSortType(e.target.value)} className="border-2 appearance-none text-xs px-3 py-1 focus:outline-none focus:ring-2 focus:ring-indigo-500">
             <option value="relavent">Relevancia</option>
@@ -109,7 +109,7 @@ const Collection = () => {
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 gap-y-6 ">
           {
             filterProducts.map((item,index) =>(
-              <ProductItem key={index} id={item.id} image={item.image} name={item.name} price={item.price} />
+              <ProductItem key={index} id={item._id} image={item.image} name={item.name} price={item.price} />
             ))
           }
         </div>
