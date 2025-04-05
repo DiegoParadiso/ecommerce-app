@@ -5,7 +5,7 @@ import { ShopContext } from '../context/ShopContext';
 
 const Navbar = () => {
   const navigate = useNavigate();
-  const { setShowSearch } = useContext(ShopContext);
+  const { setShowSearch, getCartCount } = useContext(ShopContext);
 
   const handleSearchClick = () => {
     navigate('/collection'); // Redirigir a /collection
@@ -49,7 +49,7 @@ const Navbar = () => {
 
         <Link to='/cart' className='relative'>
           <img src={assets.cart_icon} className='w-4 min-w-4' alt="Carrito" />
-          <p className='absolute right-[-5px] bottom-[-5px] w-3.5 text-center leading-4 bg-black text-white aspect-square rounded-full text-[7px]'></p>
+          <p className='absolute right-[-5px] bottom-[-5px] w-3.5 text-center leading-4 bg-black text-white aspect-square rounded-full text-[7px]'>{getCartCount()}</p>
         </Link>
       </div>
     </div>

@@ -5,7 +5,7 @@ import { ShopContext } from '../context/ShopContext'
 const Product = () => {
 
   const {productId} = useParams();
-  const {products, currency } = useContext(ShopContext);
+  const {products, currency, addToCart } = useContext(ShopContext);
   const [productData, setProductData] = useState(false);
   const [image, setImage] = useState('');
 
@@ -48,7 +48,7 @@ const Product = () => {
           <p className='mt-5 text-sm hover:text-gray-700, underline text-gray-500 hover:text-gray-600 cursor-pointer '>VER MEDIOS DE PAGO</p>
           <p className='mt-5 w-full text-black text-xs'>{productData.description}</p>
           <div className='flex gap-3 mt-5'>
-            <button className='w-full bg-gray-100 text-black px-8 py-3 text-xs hover:bg-gray-200 cursor-pointer'>AGREGAR AL CARRITO</button>
+            <button onClick={()=>addToCart(productData._id)} className='w-full bg-gray-100 text-black px-8 py-3 text-xs hover:bg-gray-200 cursor-pointer'>AGREGAR AL CARRITO</button>
           </div>
           <hr className='mt-8 sm:w-4/5'></hr>
           <div className='text-sm text-gray-500 mt-5 flex flex-col gap-1'>
