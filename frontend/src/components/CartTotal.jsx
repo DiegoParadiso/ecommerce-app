@@ -12,11 +12,11 @@ const CartTotal = () => {
 
   return (
     <div className='w-full'>
-        <div className='text-xl'>
+        <div className='font-titles my-3'>
             <Title text1={'TOTAL DEL'} text2={'CARRITO'}></Title>
         </div>
 
-        <div className='flex flex-col gap-2 mt-2 text-sm'>
+        <div className='flex flex-col gap-2 mt-2'>
             <div className='flex justify-between'>
                 <p>Subtotal</p>
                 <p>{currency} {subtotal.toFixed(2)}</p>

@@ -5,7 +5,8 @@ import { assets } from '../assets/assets';
 import CartTotal from '../components/CartTotal';
 
 const Cart = () => {
-  const { products, currency, cartItems, updateQuantity } = useContext(ShopContext);
+  
+  const { products, currency, cartItems, updateQuantity, navigate } = useContext(ShopContext);
   const [cartData, setCartData] = useState([]);
 
   useEffect(() => {
@@ -23,8 +24,8 @@ const Cart = () => {
 
   return (
     <div className='border-t pt-7'>
-      <div className='text-lg mb-3'>
-        <Title text1={'TU'} text2={'CARRITO'} />
+      <div className='my-3'>
+        <Title  text1={'TU'} text2={'CARRITO'} />
       </div>
 
       <div>
@@ -53,7 +54,7 @@ const Cart = () => {
         <div className='w-full sm:w-[450px]'>
           <CartTotal />
           <div className='w-full text-end'>
-          <button className='w-full bg-gray-100 text-black px-8 py-3 text-sm hover:bg-gray-300 my-3'>PROCEDER AL PAGO</button>
+          <button onClick={()=>navigate('/place-order')} className='w-full bg-gray-100 text-black px-8 py-3 text-sm hover:bg-gray-300 my-3'>PROCEDER AL PAGO</button>
           </div>
         </div>
       </div>
