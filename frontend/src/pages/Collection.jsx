@@ -96,8 +96,8 @@ const Collection = () => {
       
       {/* Products List */}
       <div className="flex-1 ">
-        <div className="flex justify-between pt-4 mb-4 ">
-          <Title  text1={'LISTA DE'} text2={'PRODUCTOS'} />
+        <div className="flex justify-between pt-4 mb-4">
+          <Title text1={'LISTA DE'} text2={'PRODUCTOS'} />
           { /* Products Sorts */}
           <select onChange={(e)=>setSortType(e.target.value)} className="border-2 appearance-none text-xs px-3 py-1 focus:outline-none focus:ring-2 focus:ring-indigo-500">
             <option value="relavent">Relevancia</option>
