@@ -6,9 +6,9 @@ body {
     font-family: monospace;
   }
 
-.font-titles{
-    font-family: Lucida Console , Monaco, monospace;
-}
+  .font-title {
+    font-family: monospace;
+  }
 
   a hr {
     visibility: hidden;
