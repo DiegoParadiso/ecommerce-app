@@ -4,6 +4,8 @@ import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { ShopContext } from '../context/ShopContext';
 
 const Navbar = () => {
+
+  const  [visible, setVisible] = useState(false);
   const navigate = useNavigate();
   const { setShowSearch, getCartCount } = useContext(ShopContext);
 
@@ -55,8 +57,24 @@ const Navbar = () => {
           <img src={assets.cart_icon} className='w-4 min-w-4' alt="Carrito" />
           <p className='absolute right-[-5px] bottom-[-5px] w-3.5 text-center leading-4 bg-black text-white aspect-square rounded-full text-[7px]'>{getCartCount()}</p>
         </Link>
+        <img onClick={()=>setVisible(true)} src={assets.menu_icon} className='w-5 cursor-pointer sm:hidden' alt="" />
+      </div>
+
+      {/* Mobile Menu */}
+      <div className={`absolute top-0 right-0 bottom-0 overflow-hidden bg-white transition-all ${visible ? 'w-full' : 'w-0'}`}>
+        <div className='flex flex-col text-gray-600'>
+          <div onClick={()=>setVisible(false)} className='flex items-center gap-4 p-3'>
+          <img src={assets.dropdown_icon} className='h-4 rotate-180' alt="" />
+          <p>Volver</p>
+          </div>
+          <NavLink onClick={()=>setVisible(false)} className='py-2 pl-6 border' to='/'>Inicio</NavLink>
+          <NavLink onClick={()=>setVisible(false)} className='py-2 pl-6 border' to='/Collection'>Colección</NavLink> 
+          <NavLink onClick={()=>setVisible(false)} className='py-2 pl-6 border' to='/about'>Acerca</NavLink> 
+          <NavLink onClick={()=>setVisible(false)} className='py-2 pl-6 border' to='/contact'>Contacto</NavLink> 
+          <NavLink onClick={()=>setVisible(false)} className='py-2 pl-6 border' to='https://open.spotify.com/playlist/7BqhteOexXFHSztz36hz52'>Atelier</NavLink> 
       </div>
     </div>
+  </div>
   );
 };
 
