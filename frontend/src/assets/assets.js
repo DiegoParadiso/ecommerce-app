@@ -54,7 +54,6 @@ import p_img50 from './p_img50.png'
 import p_img51 from './p_img51.png'
 import p_img52 from './p_img52.png'
 
-
 import logo from './logo.png'
 import hero_img1 from './hero_img1.png'
 import hero_img2 from './hero_img2.png'
@@ -75,6 +74,12 @@ import contact_img from './contact_img.png'
 import razorpay_logo from './razorpay_logo.png'
 import stripe_logo from './stripe_logo.png'
 import cross_icon from './cross_icon.png'
+import mp_logo from './mp_logo.svg'
+import bank_icon from './bank.png'
+import binancepay_logo from './binancepay_logo.png'
+import uala_logo from './uala_logo.png'
+import cuentadni_logo from './cuentadni_logo.svg'
+import modo_logo from './modo_logo.png'
 
 export const assets = {
     logo,
@@ -96,7 +101,13 @@ export const assets = {
     contact_img,
     razorpay_logo,
     stripe_logo,
-    cross_icon
+    cross_icon,
+    mp_logo,
+    bank_icon,
+    binancepay_logo,
+    uala_logo,
+    cuentadni_logo,
+    modo_logo
 }
 
 export const products = [

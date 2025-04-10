@@ -67,11 +67,11 @@ const Collection = () => {
     <div className="flex flex-col sm:flex-row gap-1 sm:gap-10 pt-3 border-t">
 
       {/* Filters Options */}
-      <div className="min-w-60 sm:mt-10">
-        <p onClick={() => setShowFilter(!showFilter)} className="my-2 text-xl flex items-center cursor-pointer gap-2">
-          <img className={`h-3 sm:hidden ${showFilter ? 'rotate-90' : ''}`} src={assets.dropdown_icon} alt="" />
+      <div className="min-w-60 sm:mt-10 sm:pt-5">
+        <p onClick={() => setShowFilter(!showFilter)} className="my-2 text-xs flex items-center cursor-pointer gap-2 sm:hidden text-gray-700">
+          <img className={`h-3 w-auto transition-transform duration-200 ${showFilter ? 'rotate-90' : ''}`} src={assets.dropdown_icon} alt="" />
+          <span className="leading-none">Categorias</span>
         </p>
-        
         {/* Filters */}
         <div className={`border border-gray-300 pl-5 py-3 mt-3 ${showFilter ? '' : 'hidden'} sm:block`}>
           <div className="flex flex-col gap-2 text-xs font-light text-gray-700">
@@ -96,7 +96,7 @@ const Collection = () => {
       
       {/* Products List */}
       <div className="flex-1 ">
-        <div className="flex justify-between pt-4 mb-4">
+        <div className="flex justify-between pt-3 sm:pt-4 mb-4">
           <Title text1={'LISTA DE'} text2={'PRODUCTOS'} />
           { /* Products Sorts */}
           <select onChange={(e)=>setSortType(e.target.value)} className="border-2 appearance-none text-xs px-3 py-1 focus:outline-none focus:ring-2 focus:ring-indigo-500">
