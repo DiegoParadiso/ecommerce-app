@@ -3,6 +3,7 @@ import cors from 'cors'
 import * as dotenv from 'dotenv'
 import connectDB from './config/mongodb.js'
 import connectCloudinary from './config/cloudinary.js'
+import userRouter from './routes/userRoute.js'
 
 // Cargar las variables de entorno
 dotenv.config()
@@ -18,6 +19,8 @@ app.use(express.json())
 app.use(cors())
 
 // API endpoints
+app.use('/api/user',userRouter)
+
 app.get('/', (req, res) => {   
     res.send('API working')
 })
