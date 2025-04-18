@@ -72,7 +72,16 @@ const registerUser = async (req, res) => {
 }
 
 //Route for admin login
-const adminLogin = async (req, ers) => {
+const adminLogin = async (req, res) => {
+
+    const {email, password} = req.body
+     
+    if (email === process.env.ADMIN_EMAIL && password === process.env.ADMIN_PASSWORD){
+        const token = jwt.sign(email+password,process.env.JWT_SECRET)
+        res.json({success:true, token})
+    } else {
+        res.status(400).json({success:false, message: 'Credenciales incorrectas.'})
+    }
 }
 
 export {loginUser, registerUser, adminLogin}
