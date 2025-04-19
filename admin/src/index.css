@@ -1,0 +1,12 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+    font-family: monospace;
+  }
+
+  .active {
+    background-color: #f7f7f7; 
+    border-color: #dcdcdc;
+  }
