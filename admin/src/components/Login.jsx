@@ -1,19 +1,34 @@
-import React from 'react';
+import React, { useState } from 'react';
+import axios from 'axios'
+import { backendUrl } from '../App';
 
 const Login = () => {
-    
+
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const  onSubmitHandler = async (e) =>{
+    try{
+      e.preventDefault();
+      const response = await axios.post(backendUrl+'/api/user/admin',{email, password})
+      console.log(response)
+    } catch (error) {
+      console.error('Error al iniciar sesión:', error);
+    }
+  }
+
   return (
     <div className='flex justify-center items-center h-screen bg-white'>
       <div className='w-full max-w-sm px-6 py-8 border border-gray-200 rounded-xl'>
         <h1 className='text-xl font-semibold text-gray-800 mb-6 text-center'>
           Panel de Administrador
         </h1>
-        <form className='space-y-4'>
+        <form onSubmit={onSubmitHandler} className='space-y-4'>
           <div>
             <label className='block text-sm text-gray-600 mb-1'>
               Dirección de Email
             </label>
             <input
+            onChange={(e) => setEmail(e.target.value)}
               type='email'
               placeholder='Email'
               className='w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-gray-400'
@@ -25,6 +40,7 @@ const Login = () => {
               Contraseña
             </label>
             <input
+            onChange={(e) => setPassword(e.target.value)}
               type='password'
               placeholder='Contraseña'
               className='w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-gray-400'
