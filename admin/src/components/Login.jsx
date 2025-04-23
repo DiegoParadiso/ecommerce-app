@@ -1,20 +1,28 @@
 import React, { useState } from 'react';
 import axios from 'axios'
 import { backendUrl } from '../App';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-const Login = () => {
+const Login = ({setToken}) => {
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const  onSubmitHandler = async (e) =>{
-    try{
+
+  const onSubmitHandler = async (e) => {
+    try {
       e.preventDefault();
-      const response = await axios.post(backendUrl+'/api/user/admin',{email, password})
-      console.log(response)
+      const response = await axios.post(backendUrl + '/api/user/admin', { email, password });
+      if (response.data.success) {
+        setToken(response.data.token);
+      } else {
+        toast.error(response.data.message);
+      }
     } catch (error) {
-      console.error('Error al iniciar sesión:', error);
+      console.log("Error de login:", error.response ? error.response.data : error.message);
+      toast.error(error.response ? error.response.data.message : error.message);
     }
-  }
+  };
 
   return (
     <div className='flex justify-center items-center h-screen bg-white'>
