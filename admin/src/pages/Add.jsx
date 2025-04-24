@@ -16,7 +16,7 @@ const Add = () => {
 
   const [name, setName] = React.useState('');
   const [description, setDescription] = React.useState('');
-  const [category, setCategory] = React.useState('');  
+  const [category, setCategory] = React.useState('Remera');  
   const [price, setPrice] = React.useState('');  
 
   const onHandleSubmit = async (e) => {
@@ -38,7 +38,17 @@ const Add = () => {
       image4 && formData.append("image4",image4)
 
       const response = await axios.post(backendUrl + '/api/product/add', formData, { headers: { token } })
-
+      if(response.data.success){
+        toast.success("Producto añadido correctamente")
+        setImage1(false)
+        setImage2(false)
+        setImage3(false)
+        setImage4(false)
+        setName('')
+        setDescription('')
+        setCategory('')  
+        setPrice('')  
+      }
 
       console.log(response.data)
     }catch(error){
