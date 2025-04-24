@@ -94,8 +94,9 @@ const Add = () => {
       <input onChange={(e)=>setPrice(e.target.value)} value={price}  type="number" placeholder='' className='w-full px-3 py-2 text-xs' required/>
       </div>
     </div>
-    <button type='submit'  className='w-full text-xs max-w-[500px] py-2 mt-4 text-sm text-black bg-white border border-black hover:bg-black hover:text-white transition'>Añadir</button>
+    <button type='submit' className='w-full text-xs max-w-[500px] py-2 mt-4 text-sm text-black bg-white border border-black hover:bg-black hover:text-white transition'>Añadir</button>
     </form>
+    
   );
 }
 
