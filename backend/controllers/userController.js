@@ -1,6 +1,6 @@
 import validator from 'validator'
 import userModel from '../models/userModel.js'
-import bcrypt from 'bcrypt'
+import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 
 const createToken = (id) => {
@@ -9,49 +9,49 @@ const createToken = (id) => {
 
 //Route for user login
 const loginUser = async (req, res) => {
-    try{
-        const {email, password} = req.body
+    try {
+        const { email, password } = req.body
         
-        const user = await userModel.findOne({email})
-        if(!user){
-            return res.status(400).json({message: 'El usuario no existe.'})
+        const user = await userModel.findOne({ email })
+        if (!user) {
+            return res.status(400).json({ message: 'El usuario no existe.' })
         } 
 
-        const isMatch = await bcrypt.compare(password, user.password)
-        if(isMatch){
+        const isMatch = await bcrypt.compare(password, user.password) 
+        if (isMatch) {
             const token = createToken(user._id)
-            res.json({success: true, token})
+            res.json({ success: true, token })
         } else {
-            res.json({success: false, message: 'Credenciales incorrectas.'})
+            res.json({ success: false, message: 'Credenciales incorrectas.' })
         }
-    }catch{
+    } catch (error) {
         console.log(error)
-        res.json({success:false,message:error.menssage})
+        res.json({ success: false, message: error.message })
     }
 }
 
 //Route for user register
 const registerUser = async (req, res) => {
     try {
-        const {name, email, password} = req.body
-        if(!name || !email || !password){
-            return res.status(400).json({message: 'Por favor, rellena todas las celdas.'})
+        const { name, email, password } = req.body
+        if (!name || !email || !password) {
+            return res.status(400).json({ message: 'Por favor, rellena todas las celdas.' })
         }
         //Check if user already exists
-        const exists = await userModel.findOne({email})
-        if(exists){
-            return res.status(400).json({message: 'El usuario ya existe.'})
+        const exists = await userModel.findOne({ email })
+        if (exists) {
+            return res.status(400).json({ message: 'El usuario ya existe.' })
         }
         //Validating email format & strong password
-        if(!validator.isEmail(email)){
-            return res.status(400).json({message: 'El email no es válido.'})
+        if (!validator.isEmail(email)) {
+            return res.status(400).json({ message: 'El email no es válido.' })
         }
-        if(password.length < 8){
-            return res.status(400).json({message: 'La contraseña debe tener al menos 6 caracteres.'})
+        if (password.length < 8) {
+            return res.status(400).json({ message: 'La contraseña debe tener al menos 8 caracteres.' })
         }
 
         //Hash password
-        const salt = await bcrypt.genSalt(10)
+        const salt = await bcrypt.genSalt(10) 
         const hashedPassword = await bcrypt.hash(password, salt)
 
         const newUser = new userModel({
@@ -63,11 +63,11 @@ const registerUser = async (req, res) => {
         const user = await newUser.save()
         const token = createToken(user._id)
 
-        res.json({success:true, token})
+        res.json({ success: true, token })
 
-    } catch (error){
+    } catch (error) {
         console.log(error)
-        res.json({success:false,message:error.menssage})
+        res.json({ success: false, message: error.message })
     }
 }
 
@@ -92,4 +92,4 @@ const adminLogin = async (req, res) => {
     }
   };
 
-export {loginUser, registerUser, adminLogin}
+export { loginUser, registerUser, adminLogin }
