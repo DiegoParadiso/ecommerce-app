@@ -6,7 +6,30 @@ body {
     font-family: monospace;
   }
 
-  .active {
-    background-color: #f7f7f7; 
-    border-color: #dcdcdc;
+  select, input, textarea {
+    font-family: monospace;
+    border: 1px solid #d1d5db;
+    background-color: #ffffff;
+    color: #374151; 
+    padding: 0.5rem;
+    outline-color: #9ca3af;
   }
+  
+  select:focus, input:focus, textarea:focus {
+    border-color: #6b7280; 
+    outline: none;
+  }
+
+  .active {
+    background-color: #f3f4f6; 
+    border-color: #d1d5db;
+  }
+
+  button {
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  button:hover {
+  }
+  

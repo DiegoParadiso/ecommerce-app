@@ -3,7 +3,7 @@ import { assets } from '../assets/assets';
 
 const NavBar = ({setToken}) => {
   return (
-    <div className='flex justify-between items-center bg-white py-2 px-4 sm:px-8 lg:px-16 shadow-md'>
+    <div className='flex justify-between items-center bg-white py-2 px-4 sm:px-8 lg:px-16'>
       <img
         className='w-32 sm:w-36 md:w-40 object-contain'
         src={assets.logo}

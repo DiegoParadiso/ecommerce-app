@@ -8,6 +8,7 @@ import productRouter from './routes/productRouter.js'
 
 // Cargar las variables de entorno
 dotenv.config()
+console.log(process.env.CLOUDINARY_API_SECRET);
 
 //App Config
 const app = express()
