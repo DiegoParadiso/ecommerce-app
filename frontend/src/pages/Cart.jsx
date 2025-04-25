@@ -10,22 +10,40 @@ const Cart = () => {
   const [cartData, setCartData] = useState([]);
 
   useEffect(() => {
-    const tempData = [];
-    for (const itemId in cartItems) {
-      if (cartItems[itemId] > 0) {
-        tempData.push({
-          _id: itemId,
-          quantity: cartItems[itemId]
-        });
+    if (products.length > 0) {
+      const tempData = [];
+      for (const itemId in cartItems) {
+        if (cartItems[itemId] > 0) {
+          tempData.push({
+            _id: itemId,
+            quantity: cartItems[itemId]
+          });
+        }
       }
+      setCartData(tempData);
     }
-    setCartData(tempData);
-  }, [cartItems]);
+  }, [cartItems, products]);
+
+  const handleIncrease = (id, stock) => {
+    const currentQuantity = cartItems[id];
+    if (currentQuantity < stock) {
+      updateQuantity(id, currentQuantity + 1); // Llamamos a la función de actualización
+    }
+  };
+
+  const handleDecrease = (id) => {
+    const currentQuantity = cartItems[id];
+    if (currentQuantity > 1) {
+      updateQuantity(id, currentQuantity - 1);
+    } else if (currentQuantity === 1) {
+      updateQuantity(id, 0); // Elimina el producto si la cantidad es 1 y se presiona "-"
+    }
+  };
 
   return (
     <div className='border-t pt-7'>
       <div className='my-3'>
-        <Title  text1={'TU'} text2={'CARRITO'} />
+        <Title text1={'TU'} text2={'CARRITO'} />
       </div>
 
       <div>
@@ -42,19 +60,46 @@ const Cart = () => {
                   <p className='text-xs text-gray-500'>Precio: {currency}{productData.price * item.quantity}</p>
                 </div>
               </div>
-              <input onChange={(e)=> e.target.value === '' || e.target.value === '0' ? null : updateQuantity(item._id, parseInt(e.target.value))} className='w-16 sm:w-20 text-center border border-gray-300 rounded-md' type="number" value={item.quantity} min={0} max={productData.stock} />
-              <img onClick={()=>updateQuantity(item._id, 0)} className='w-4 mr-4 sm:w-5 cursor-pointer' src={assets.bin_icon} alt=""></img>
+
+              {/* Botones para aumentar y disminuir cantidad */}
+              <div className="flex items-center gap-4">
+                <button 
+                  onClick={() => handleIncrease(item._id, productData.stock)} 
+                  className='px-2 py-1 bg-gray-200 text-black rounded-md'
+                  disabled={cartItems[item._id] >= productData.stock}  // Deshabilitar si ya llega al máximo stock
+                >
+                  +
+                </button>
+                <span className='text-sm'>{item.quantity}</span>
+                <button 
+                  onClick={() => handleDecrease(item._id)} 
+                  className='px-2 py-1 bg-gray-200 text-black rounded-md'
+                  disabled={cartItems[item._id] === 0}  // Deshabilitar si la cantidad es 0
+                >
+                  -
+                </button>
+              </div>
+
+              <img 
+                onClick={() => updateQuantity(item._id, 0)} 
+                className='w-4 mr-4 sm:w-5 cursor-pointer' 
+                src={assets.bin_icon} 
+                alt=""
+              />
             </div>
           );
-        })
-      }
+        })}
       </div>
 
       <div className='flex justify-end my-20'>
         <div className='w-full sm:w-[450px]'>
           <CartTotal />
           <div className='w-full text-end'>
-          <button onClick={()=>navigate('/place-order')} className='w-full bg-gray-100 text-black px-8 py-3 text-sm hover:bg-gray-300 my-3'>PROCEDER AL PAGO</button>
+            <button 
+              onClick={() => navigate('/place-order')} 
+              className='w-full bg-gray-100 text-black px-8 py-3 text-sm hover:bg-gray-300 my-3'>
+              PROCEDER AL PAGO
+            </button>
           </div>
         </div>
       </div>

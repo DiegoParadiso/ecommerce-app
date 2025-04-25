@@ -1,59 +1,73 @@
-import userModel from "../models/userModel"
+import userModel from "../models/userModel.js"
 
 const addToCart = async (req, res) => {
-    try{
-        const { userId, itemId } = req.body
+    try {
+        const userId = req.user; // Asegúrate de que tu middleware de auth lo esté seteando
+        const { itemId } = req.body;
 
-        const userData = await userModel.findById(userId)
-        let cartData = await userData.cartData;
+        console.log("Received itemId:", itemId);
 
-        if(cartData[itemId]){
-            if(cartData[itemId]){
-                cartData[itemId] += 1
-            }else{
-                cartData[itemId] = 1
-            }
-        }else{
-            cartData[itemId] = 1
+        const userData = await userModel.findById(userId);
+        if (!userData) {
+            return res.status(404).json({ success: false, message: 'Usuario no encontrado' });
         }
 
-        await userModel.findByIdAndUpdate(userId, { cartData })
+        let cartData = userData.cartData || {};
 
-        res.json({ success: true, message: 'Añadido al carrito'})
-    }catch{
-        console.log(error)
-        res.json({ success: false, message: error.message })
+        if (cartData[itemId]) {
+            cartData[itemId] += 1;
+        } else {
+            cartData[itemId] = 1;
+        }
+
+        console.log("Updated cartData:", cartData);
+        await userModel.findByIdAndUpdate(userId, { cartData });
+
+        res.json({ success: true, message: 'Añadido al carrito' });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ success: false, message: error.message });
     }
-}
+};
 
 const updateCart = async (req, res) => {
-    try{
-        const { userId, itemId, quantity } = req.body
+    try {
+        const userId = req.user;
+        const { itemId, quantity } = req.body;
 
-        const userData = await userModel.findById(userId)
-        let cartData = await userData.cartData;
+        const userData = await userModel.findById(userId);
+        if (!userData) {
+            return res.status(404).json({ success: false, message: 'Usuario no encontrado' });
+        }
 
-        cartData[itemId] = quantity
+        let cartData = userData.cartData || {};
+        cartData[itemId] = quantity;
 
-        await userModel.findByIdAndUpdate(userId, { cartData })
+        await userModel.findByIdAndUpdate(userId, { cartData });
 
-        res.json({ success: true, message: 'Carrito actualizado'})
-
-    }catch{
-        console.log(error)
-        res.json({ success: false, message: error.message })
+        res.json({ success: true, message: 'Carrito actualizado' });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ success: false, message: error.message });
     }
-}
+};
 
 const getUserCart = async (req, res) => {
-    try{
-        const { userId } = req.body
-        const userData = await userModel.findById(userId)
-        let cartData = await userData.cartData;
+    try {
+        const userId = req.user;
 
-        res.json ({ success: true, cartData })
-    }catch{
-        console.log(error)
-        res.json({ success: false, message: error.message })
+        const userData = await userModel.findById(userId);
+        if (!userData) {
+            return res.status(404).json({ success: false, message: 'Usuario no encontrado' });
+        }
+
+        let cartData = userData.cartData || {};
+
+        res.json({ success: true, cartData });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ success: false, message: error.message });
     }
-}
+};
+
+export { addToCart, updateCart, getUserCart };

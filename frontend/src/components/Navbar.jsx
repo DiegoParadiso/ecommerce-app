@@ -1,14 +1,22 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { assets } from '../assets/assets';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { ShopContext } from '../context/ShopContext';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Navbar = () => {
 
   const  [visible, setVisible] = useState(false);
-  const navigate = useNavigate();
-  const { setShowSearch, getCartCount } = useContext(ShopContext);
-
+  const { setShowSearch, getCartCount, navigate, token, setToken, setCartItems } = useContext(ShopContext);
+  
+  const logout = () => {
+    navigate('/login'); // Redirigir a la página de inicio de sesión
+    localStorage.removeItem('token');
+    setToken('');
+    setCartItems({});
+  }
+  
   const handleSearchClick = () => {
     navigate('/collection'); // Redirigir a /collection
     setShowSearch(true); // Luego mostrar la barra de búsqueda
@@ -43,14 +51,17 @@ const Navbar = () => {
         <img onClick={handleSearchClick} src={assets.search_icon} className='w-4 cursor-pointer' alt="Buscar" />
         
         <div className='group relative'>
-          <img className='w-4 cursor-pointer' src={assets.profile_icon} alt="Perfil" />
+          <img onClick={()=> token ? null : navigate('/login') } className='w-4 cursor-pointer' src={assets.profile_icon} alt="Perfil" />
+          { /* Dropdown Menu */}
+          {token && 
           <div className='group-hover:block hidden absolute dropdown-menu right-0 pt-4'>
-            <div className='flex flex-col gap-2 w-36 py-3 px-5 bg-slate-100 text-gray-500 rounded'>
-              <p className='cursor-pointer hover:text-black'>Perfil</p>
-              <p className='cursor-pointer hover:text-black'>Órdenes</p>
-              <p className='cursor-pointer hover:text-black'>Cerrar Sesión</p> 
-            </div>
+          <div className='flex flex-col gap-2 w-36 py-3 px-5 bg-slate-100 text-gray-500 rounded'>
+            <p className='cursor-pointer hover:text-black'>Perfil</p>
+            <p onClick={()=>navigate('/orders')} className='cursor-pointer hover:text-black'>Órdenes</p>
+            <p onClick={logout} className='cursor-pointer hover:text-black'>Cerrar Sesión</p> 
           </div>
+          </div>
+          }
         </div>  
 
         <Link to='/cart' className='relative'>

@@ -5,10 +5,10 @@ import connectDB from './config/mongodb.js'
 import connectCloudinary from './config/cloudinary.js'
 import userRouter from './routes/userRoute.js'
 import productRouter from './routes/productRouter.js'
+import cartRouter from './routes/cartRoutes.js'
 
 // Cargar las variables de entorno
 dotenv.config()
-console.log(process.env.CLOUDINARY_API_SECRET);
 
 //App Config
 const app = express()
@@ -23,6 +23,7 @@ app.use(cors())
 // API endpoints
 app.use('/api/user',userRouter)
 app.use('/api/product',productRouter)
+app.use('/api/cart',cartRouter)
 
 app.get('/', (req, res) => {   
     res.send('API working')
