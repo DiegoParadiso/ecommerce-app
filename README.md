@@ -1,11 +1,12 @@
 # Ecommerce App
 
-Proyecto de aplicación de comercio electrónico desarrollado con React y Tailwind CSS en el frontend. El backend aún está en desarrollo y se espera integrar una API para la gestión de productos, usuarios y pedidos.
+Este proyecto de comercio electrónico está desarrollado utilizando React y Tailwind CSS para el frontend, ofreciendo una interfaz moderna y responsiva. El backend, aún en desarrollo, está construido con Node.js y Express, proporcionando una API robusta para la gestión de productos, usuarios y pedidos. La autenticación se maneja mediante JWT para garantizar la seguridad de las sesiones de los usuarios, mientras que MongoDB se encarga de almacenar de manera eficiente la información de la base de datos.
 
 Tecnologías Utilizadas
 Frontend: React, Tailwind CSS
-Backend: (Pendiente de implementación)
-Base de Datos: (Pendiente de implementación)
+Backend: Node.js + Express
+Autenticación:	JWT
+Base de Datos: MongoDB
 
   
 ## Instalación
