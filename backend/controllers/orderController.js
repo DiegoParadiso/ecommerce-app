@@ -40,44 +40,15 @@ const placeOrderMP = async (req, res) => {
   }
 };
 
-// Orden vía Transferencia Bancaria
-const placeOrderTransfer = async (req, res) => {
-  try {
-    const { userId, items, amount, address } = req.body;
-    const newOrder = new orderModel({
-      userId,
-      items,
-      amount,
-      address,
-      paymentMethod: 'transferencia',
-      payment: false,
-      date: Date.now(),
-    });
-    await newOrder.save();
-    res.status(201).json({ success: true, message: 'Orden con transferencia creada', order: newOrder });
-  } catch (error) {
-    res.status(500).json({ success: false, message: 'Error con transferencia', error });
-  }
-};
 
-// Orden con Pago en efectivo al recibir
-const placeOrderCash = async (req, res) => {
-  try {
-    const { userId, items, amount, address } = req.body;
-    const newOrder = new orderModel({
-      userId,
-      items,
-      amount,
-      address,
-      paymentMethod: 'efectivo',
-      payment: false,
-      date: Date.now(),
-    });
-    await newOrder.save();
-    res.status(201).json({ success: true, message: 'Orden en efectivo creada', order: newOrder });
-  } catch (error) {
-    res.status(500).json({ success: false, message: 'Error con efectivo', error });
-  }
-};
+const allOrders = async (req, res)=>{
 
-export { placeOrder, placeOrderMP, placeOrderTransfer, placeOrderCash };
+}
+const userOrders = async (req, res)=>{
+
+}
+const updateStatus = async (req, res)=>{
+
+}
+
+export { placeOrder, placeOrderMP, allOrders, userOrders, updateStatus };

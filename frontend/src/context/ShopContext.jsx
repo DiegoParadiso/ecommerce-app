@@ -135,6 +135,7 @@ const ShopContextProvider = ({ children }) => {
         backendUrl,
         setToken,
         token,
+        setCartItems
     };
 
     return (
