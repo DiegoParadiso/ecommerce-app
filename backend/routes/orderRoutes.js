@@ -1,17 +1,18 @@
- import express from 'express'
- import { allOrders, updateStatus, userOrders } from '../controllers/orderController.js' 
- import adminAuth from '../middleware/adminAuth.js'
- import authUser from '../middleware/auth.js'
+import express from 'express'
+import { placeOrder, allOrders, userOrders, updateStatus } from '../controllers/orderController.js'
+import adminAuth from '../middleware/adminAuth.js'
+import authUser from '../middleware/auth.js'
 
- const orderRouter = express.Router();
+const orderRouter = express.Router()
 
- // Admin Features 
- orderRouter.post('list',adminAuth, allOrders)
- orderRouter.post('status',adminAuth, updateStatus )
+// Crear orden
+orderRouter.post('/place', authUser, placeOrder)
 
- // Payment Features
+// Órdenes del usuario
+orderRouter.get('/userorders/:userId', authUser, userOrders)
 
- // User Features
- orderRouter.post('/userorders', authUser, userOrders)
+// Admin: todas las órdenes y actualizar estado
+orderRouter.get('/list', adminAuth, allOrders)
+orderRouter.put('/status/:orderId', adminAuth, updateStatus)
 
- export default orderRouter
+export default orderRouter
