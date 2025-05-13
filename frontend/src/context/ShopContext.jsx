@@ -106,6 +106,14 @@ const ShopContextProvider = ({ children }) => {
     }, []);
 
     useEffect(() => {
+
+        if (!token && localStorage.getItem('token')) {
+            setToken(localStorage.getItem('token'));
+            getUserCart(localStorage.getItem('token'));
+        }
+    })
+
+    useEffect(() => {
         const savedToken = localStorage.getItem('token');
         if (savedToken) {
             setToken(savedToken);
