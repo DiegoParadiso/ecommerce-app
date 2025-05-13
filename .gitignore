@@ -7,7 +7,7 @@ pnpm-debug.log*
 
 # === Entornos ===
 .env
-.env.*  # por si usás .env.development, .env.production, etc.
+.env.*  
 
 # === Logs ===
 *.log

@@ -4,9 +4,11 @@ import CartTotal from '../components/CartTotal'
 import { ShopContext } from '../context/ShopContext'
 import { assets } from '../assets/assets';
 import { toast } from 'react-toastify';
+import axios from 'axios';
 import 'react-toastify/dist/ReactToastify.css';
 
 const PlaceOrder = () => {
+
   const { navigate, backendUrl, token, cartItems, setCartItems, getCartAmount, delivery_fee, products } = useContext(ShopContext);
 
   const [formData, setFormData] = useState({
@@ -25,7 +27,6 @@ const PlaceOrder = () => {
     event.preventDefault();
     try {
       let orderItems = [];
-      // Creamos el arreglo de items del carrito
       for (const productId in cartItems) {
         const quantity = cartItems[productId];
         if (quantity > 0) {
@@ -35,8 +36,7 @@ const PlaceOrder = () => {
           }
         }
       }
-
-      // Datos de la orden
+  
       let orderData = {
         address: formData,
         items: orderItems,
@@ -44,56 +44,30 @@ const PlaceOrder = () => {
         paymentMethod: method,
       };
 
-      // URL de la API para crear la orden
-      const orderUrl = `${backendUrl}/orders/place`;
-
       switch (method) {
         case 'mercadopago':
-          // En caso de MercadoPago, redirigimos a la página de pago
-          const response = await fetch(orderUrl, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'token': token, 
-            },
-            body: JSON.stringify(orderData),
+          const response = await axios.post(backendUrl + '/api/order/place', orderData, {
+            headers: { token }
           });
-
-          const data = await response.json();
-
-          if (data.init_point) {
-            window.location.href = data.init_point; // Redirigimos a la página de pago
+          console.log(response.data);
+          if (response.data.success) {
+            setCartItems({});
+            navigate('/orders');
           } else {
-            toast.error("No se pudo iniciar el pago con MercadoPago");
+            toast.error("Error al procesar la orden con MercadoPago");
           }
           break;
-
-        case 'efectivo':
-        case 'transferencia':
-          // Si el método de pago es efectivo o transferencia, procesamos la orden sin redirección
-          await fetch(orderUrl, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'token': token, 
-            },
-            body: JSON.stringify(orderData),
-          });
-
-          toast.success("Orden creada con éxito");
-          setCartItems({}); // Limpiamos el carrito
-          navigate('/order-success'); // Redirigimos a la página de éxito
-          break;
-
         default:
           toast.error("Seleccioná un método de pago válido");
+          break;
       }
-
+      
     } catch (error) {
       console.log(error);
       toast.error("Error al procesar la orden");
     }
   };
+  
 
   return (
     <form onSubmit={onSubmitHandler} className='flex flex-col lg:flex-row justify-between gap-10 pt-5 sm:pt-14 min-h-[80vh] border-t'>
