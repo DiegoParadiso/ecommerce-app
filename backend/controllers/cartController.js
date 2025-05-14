@@ -2,8 +2,7 @@ import userModel from "../models/userModel.js"
 
 const addToCart = async (req, res) => {
     try {
-        const userId = req.user; // Asegúrate de que tu middleware de auth lo esté seteando
-        const { itemId } = req.body;
+        const { itemId, userId } = req.body;
 
         console.log("Received itemId:", itemId);
 
@@ -32,8 +31,7 @@ const addToCart = async (req, res) => {
 
 const updateCart = async (req, res) => {
     try {
-        const userId = req.user;
-        const { itemId, quantity } = req.body;
+        const { itemId, quantity, userId } = req.body;
 
         const userData = await userModel.findById(userId);
         if (!userData) {
@@ -54,8 +52,7 @@ const updateCart = async (req, res) => {
 
 const getUserCart = async (req, res) => {
     try {
-        const userId = req.user;
-
+        const {userId} = req.body;
         const userData = await userModel.findById(userId);
         if (!userData) {
             return res.status(404).json({ success: false, message: 'Usuario no encontrado' });

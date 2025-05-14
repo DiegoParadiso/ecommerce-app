@@ -24,49 +24,51 @@ const PlaceOrder = () => {
   };
 
   const onSubmitHandler = async (event) => {
-    event.preventDefault();
-    try {
-      let orderItems = [];
-      for (const productId in cartItems) {
-        const quantity = cartItems[productId];
-        if (quantity > 0) {
-          const productInfo = products.find(product => product._id === productId);
-          if (productInfo) {
-            orderItems.push({ ...productInfo, quantity });
-          }
+  event.preventDefault();
+  try {
+    let orderItems = [];
+    for (const productId in cartItems) {
+      const quantity = cartItems[productId];
+      if (quantity > 0) {
+        const productInfo = products.find(product => product._id === productId);
+        if (productInfo) {
+          orderItems.push({ ...productInfo, quantity });
         }
       }
-  
-      let orderData = {
-        address: formData,
-        items: orderItems,
-        amount: getCartAmount() + delivery_fee,
-        paymentMethod: method,
-      };
-
-      switch (method) {
-        case 'mercadopago':
-          const response = await axios.post(backendUrl + '/api/order/place', orderData, {
-            headers: { token }
-          });
-          console.log(response.data);
-          if (response.data.success) {
-            setCartItems({});
-            navigate('/orders');
-          } else {
-            toast.error("Error al procesar la orden con MercadoPago");
-          }
-          break;
-        default:
-          toast.error("Seleccioná un método de pago válido");
-          break;
-      }
-      
-    } catch (error) {
-      console.log(error);
-      toast.error("Error al procesar la orden");
     }
-  };
+
+    let orderData = {
+      address: formData,
+      items: orderItems,
+      amount: getCartAmount() + delivery_fee,
+      paymentMethod: method,
+      email: formData.email,
+      firstName: formData.firstName,
+      lastName: formData.lastName,
+    };
+
+    switch (method) {
+      case 'mercadopago':
+        const response = await axios.post(backendUrl + '/api/order/place', orderData, {
+          headers: { token },
+        }); 
+        console.log(response.data);
+        if (response.data.success) {
+          setCartItems({});
+          navigate('/orders');
+        } else {
+          toast.error("Error al procesar la orden con MercadoPago");
+        }
+        break;
+      default:
+        toast.error("Seleccioná un método de pago válido");
+        break;
+    }
+  } catch (error) {
+    console.log(error);
+    toast.error("Error al procesar la orden");
+  }
+};
   
 
   return (
