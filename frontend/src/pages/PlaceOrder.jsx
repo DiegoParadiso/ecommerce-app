@@ -19,56 +19,58 @@ const PlaceOrder = () => {
   const [method, setMethod] = useState('mercadopago'); // método por defecto
 
   const onChangeHandler = (event) => {
-    const { name, value } = event.target;
+    const name = event.target.name;
+    const value = event.target.value;
     setFormData(data => ({ ...data, [name]: value }));
   };
 
   const onSubmitHandler = async (event) => {
-  event.preventDefault();
-  try {
-    let orderItems = [];
-    for (const productId in cartItems) {
-      const quantity = cartItems[productId];
-      if (quantity > 0) {
-        const productInfo = products.find(product => product._id === productId);
-        if (productInfo) {
-          orderItems.push({ ...productInfo, quantity });
+    event.preventDefault();
+    try {
+      let orderItems = [];
+      for (const productId in cartItems) {
+        const quantity = cartItems[productId];
+        if (quantity > 0) {
+          const productInfo = products.find(product => product._id === productId);
+          if (productInfo) {
+            orderItems.push({ ...productInfo, quantity });
+          }
         }
       }
-    }
-
-    let orderData = {
-      address: formData,
-      items: orderItems,
-      amount: getCartAmount() + delivery_fee,
-      paymentMethod: method,
-      email: formData.email,
-      firstName: formData.firstName,
-      lastName: formData.lastName,
-    };
-
-    switch (method) {
-      case 'mercadopago':
-        const response = await axios.post(backendUrl + '/api/order/place', orderData, {
-          headers: { token },
-        }); 
-        console.log(response.data);
-        if (response.data.success) {
-          setCartItems({});
-          navigate('/orders');
-        } else {
-          toast.error("Error al procesar la orden con MercadoPago");
-        }
-        break;
-      default:
-        toast.error("Seleccioná un método de pago válido");
-        break;
-    }
-  } catch (error) {
-    console.log(error);
-    toast.error("Error al procesar la orden");
-  }
+let orderData = {
+  address: {
+    street: formData.street,
+    city: formData.city,
+    zip: formData.cp,
+    country: formData.country || 'Argentina', // podés adaptarlo
+  },
+  items: orderItems,
+  amount: getCartAmount() + delivery_fee,
 };
+
+      switch (method) {
+        case 'cod':
+          const response = await axios.post(backendUrl + '/api/order/place', orderData, {
+            headers: { token },
+          }); 
+          console.log(response.data);
+          if (response.data.success) {
+            setCartItems({});
+            navigate('/orders');
+          } else {
+            toast.error(response.data.message);
+          }
+          break;
+        default:
+          toast.error("Seleccioná un método de pago válido");
+          break;
+        }
+      
+    } catch (error) {
+      console.log(error);
+      toast.error("Error al procesar la orden");
+    }
+  };
   
 
   return (
@@ -100,29 +102,34 @@ const PlaceOrder = () => {
 
         <div className='mt-12'>
           <Title text1={'MÉTODO DE'} text2={'PAGO'} />
-
-          {/* Métodos de pago */}
-          <div className="flex flex-wrap gap-3">
-            {[{ id: 'mercadopago', logo: assets.mp_logo }, { id: 'transferencia', label: 'TRANSFERENCIA BANCARIA', icon: assets.bank_icon }, { id: 'efectivo', label: 'EFECTIVO' }, { id: 'cuotas', label: 'CUOTAS SIN TARJETA DE MERCADOPAGO' }].map(option => (
-              <div
-                key={option.id}
-                onClick={() => setMethod(option.id)}
-                className={`flex items-center gap-3 border p-2 px-3 cursor-pointer ${method === option.id ? 'border-green-500' : ''}`}
-              >
-                <p className={`min-w-3.5 h-3.5 border rounded-full ${method === option.id ? 'bg-green-400' : ''}`}></p>
-                {option.logo ? (
-                  <img className='h-5 mx-4' src={option.logo} alt={option.id} />
-                ) : option.icon ? (
-                  <p className='text-gray-500'>
-                    <img className="h-5 mx-4 inline brightness-0 saturate-0 opacity-50" src={option.icon} alt="icono" />
-                    {option.label}
-                  </p>
-                ) : (
-                  <p className='text-gray-500'>{option.label}</p>
-                )}
-              </div>
-            ))}
-          </div>
+{/* Métodos de pago */}
+<div className="flex flex-wrap gap-3">
+  {[
+    { id: 'mercadopago', logo: assets.mp_logo },
+    { id: 'transferencia', label: 'TRANSFERENCIA BANCARIA', icon: assets.bank_icon },
+    { id: 'efectivo', label: 'EFECTIVO' },
+    { id: 'cuotas', label: 'CUOTAS SIN TARJETA DE MERCADOPAGO' },
+    { id: 'cod', label: 'PAGO CONTRA ENTREGA' } 
+  ].map(option => (
+    <div
+      key={option.id}
+      onClick={() => setMethod(option.id)}
+      className={`flex items-center gap-3 border p-2 px-3 cursor-pointer ${method === option.id ? 'border-green-500' : ''}`}
+    >
+      <p className={`min-w-3.5 h-3.5 border rounded-full ${method === option.id ? 'bg-green-400' : ''}`}></p>
+      {option.logo ? (
+        <img className='h-5 mx-4' src={option.logo} alt={option.id} />
+      ) : option.icon ? (
+        <p className='text-gray-500'>
+          <img className="h-5 mx-4 inline brightness-0 saturate-0 opacity-50" src={option.icon} alt="icono" />
+          {option.label}
+        </p>
+      ) : (
+        <p className='text-gray-500'>{option.label}</p>
+      )}
+    </div>
+  ))}
+</div>
 
           {/* Botón de enviar */}
           <div className='w-full text-end mt-8'>

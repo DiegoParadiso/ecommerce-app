@@ -50,7 +50,7 @@ const ShopContextProvider = ({ children }) => {
         }
     };
 
-    const getUserCart = async () => {
+    const getUserCart = async ( token ) => {
         try {
             const { data } = await axios.post(`${backendUrl}/api/cart/get`, {}, {
                 headers: { token },
@@ -111,20 +111,7 @@ const ShopContextProvider = ({ children }) => {
             setToken(localStorage.getItem('token'));
             getUserCart(localStorage.getItem('token'));
         }
-    })
-
-    useEffect(() => {
-        const savedToken = localStorage.getItem('token');
-        if (savedToken) {
-            setToken(savedToken);
-        }
-    }, []);
-
-    useEffect(() => {
-        if (token) {
-            getUserCart();
-        }
-    }, [token]);
+    },[]);
 
     // ----------------- CONTEXT VALUE -------------------
 
