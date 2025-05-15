@@ -37,16 +37,12 @@ const PlaceOrder = () => {
           }
         }
       }
-let orderData = {
-  address: {
-    street: formData.street,
-    city: formData.city,
-    zip: formData.cp,
-    country: formData.country || 'Argentina', // podés adaptarlo
-  },
-  items: orderItems,
-  amount: getCartAmount() + delivery_fee,
-};
+
+      let orderData = {
+        address: formData,
+        items: orderItems,
+        amount: getCartAmount() + delivery_fee,
+      };
 
       switch (method) {
         case 'cod':

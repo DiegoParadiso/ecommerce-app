@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { backendUrl } from '../App';
+import { backendUrl, currency } from '../App';
 import { toast } from 'react-toastify';
-// Asegurate de importar assets si usás una imagen:
-import assets from '../assets'; // <-- ajustar si es necesario
+import { assets } from '../assets/assets';
 
 const Orders = ({ token }) => {
   const [orders, setOrders] = useState([]);
@@ -37,39 +36,41 @@ const Orders = ({ token }) => {
       <h3 className="text-2xl font-bold">Pedidos:</h3>
       <div>
         {orders.map((order, index) => (
-          <div key={index} className="border p-4 my-2 rounded shadow">
-            <img src={assets.parcel_icon} alt="Paquete" className="w-8 h-8" />
+          <div key={index} className="grid grid-cols-1 sm:grid-cols-[0.5fr_2fr_1fr] lg:grid-cols-[0.5fr_2fr_1fr_1fr_1fr] gap-3 items-start border-2 border-gray-200 p-5 md:p-8 my-3 md:my-4 text-xs text-gray-700">
+            <img src={assets.parcel_icon} alt="" className='w-12' />
 
             <div>
-              {order.items.map((item, idx) => (
-                <p key={idx}>
-                  {item.name} x {item.quantity}
-                  {idx !== order.items.length - 1 ? ',' : ''}
-                </p>
-              ))}
-            </div>
-
-            <p>
-              {order.address.firstName} {order.address.lastName}
-            </p>
-
+              <div> {order.items.map((item, idx) => {
+                if(idx === order.items.length - 1) {
+                  return <p className='py-0.5' key={idx}>{item.name} x {item.quantity}</p>
+                }else{
+                  return <p className='py-0.5' key={idx}>{item.name} x {item.quantity},</p>
+                }
+              })}
+              </div>
+            <p className='mt-3 mb-2 font-medium'>{order.address.firstName + " " + order.address.lastName}</p>
             <div>
-              <p>
-                {order.address.street}, {order.address.city},{' '}
-                {order.address.state}, {order.address.cp}
-              </p>
+              <p>{order.address.street + ","}</p>
+              <p>{order.address.city + ", " + order.address.state + ", " + order.address.cp}</p>
               <p>{order.address.country}</p>
             </div>
 
             <p>{order.address.phone}</p>
-
+</div>
             <div>
-              <p>Items: {order.items.length}</p>
+              <p className='text-sm sm:text-[15px] pb-5'>Items: {order.items.length}</p>
               <p>Método de pago: {order.paymentMethod}</p>
-              <p>Estado: {order.payment ? 'Hecho' : 'Pendiente'}</p>
+              <p>Estado: {order.payment ? 'pagado' : 'Pendiente'}</p>
               <p>Fecha: {new Date(order.date).toLocaleDateString()}</p>
             </div>
-            <p>{currency}{order.amount}</p>
+            <p className='text-sm sm:text-[15px]'>{currency}{order.amount}</p>
+            <select value={order.status} className='font-semibold p-2'>
+             <option value="order placed">Pendiente</option>
+              <option value="packing">Pendiente</option>
+              <option value="shipped">Enviado</option>
+              <option value="out for delivery">para retirar</option>
+              <option value="delivered">entregado</option>
+            </select>
           </div>
         ))}
       </div>
