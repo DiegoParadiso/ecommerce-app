@@ -59,9 +59,11 @@ useEffect(() => {
                   <p className='sm:text-base font-medium'>{item.name}</p>
                   <div className='flex items-center gap-3 mt-2 text-gray-700'>
                     <p>{currency}{item.price}</p>
-                    <p>Cantidad: 1</p>
+                    <p>Cantidad: {item.quantity}</p>
                   </div>
-                <p className='mt-2'>Fecha:  <span className='text-gray-400'>25, Julio 2025</span></p>
+                <p className='mt-2'>Fecha:  <span className='text-gray-400'>{new Date(item.date).toDateString()}</span></p>
+                <p className='mt-2'>Método de Pago:  <span className='text-gray-400'>{item.paymentMethod}</span></p>
+
                 </div>
               </div>
               <div className='md:w-1/2 flex justify-between'>
@@ -69,7 +71,7 @@ useEffect(() => {
                   <p className='min-w-2 h-2 rounded-full bg-green-500'></p>
                   <p className='text-sm'>Listo para el envío</p>
                 </div>
-                <button className='border px-4 py-2 rounded-sm'>Seguir el envío</button>
+                <button onClick={loadOrderData} className='border px-4 py-2 rounded-sm'>Seguir el envío</button>
               </div>
             </div>
           ))
