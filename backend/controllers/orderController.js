@@ -64,8 +64,7 @@ const userOrders = async (req, res) => {
 
 const updateStatus = async (req, res) => {
   try {
-    const { orderId } = req.params;
-    const { status } = req.body;
+    const { orderId, status } = req.body;
     console.log(`Actualizando el estado de la orden ${orderId} a: ${status}`);
     await orderModel.findByIdAndUpdate(orderId, { status });
     res.status(200).json({ success: true, message: 'Estado actualizado correctamente' });

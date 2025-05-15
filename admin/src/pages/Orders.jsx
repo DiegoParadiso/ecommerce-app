@@ -27,6 +27,23 @@ const Orders = ({ token }) => {
     }
   };
 
+
+const statusHandler = async (event, orderId) => {
+  const newStatus = event.target.value;
+  try {
+    const response = await axios.post(
+      backendUrl + '/api/order/status',
+      { orderId, status: newStatus },
+      { headers: { token } }
+    );
+    if (response.data.success) {
+      await fetchAllOrders();
+    }
+  } catch (error) {
+    toast.error(error.message);
+  }
+};
+
   useEffect(() => {
     fetchAllOrders();
   }, [token]);
@@ -64,7 +81,7 @@ const Orders = ({ token }) => {
               <p>Fecha: {new Date(order.date).toLocaleDateString()}</p>
             </div>
             <p className='text-sm sm:text-[15px]'>{currency}{order.amount}</p>
-            <select value={order.status} className='font-semibold p-2'>
+            <select onChange={(e)=>statusHandler(e,order._id)} value={order.status} className='font-semibold p-2'>
              <option value="order placed">Pendiente</option>
               <option value="packing">Pendiente</option>
               <option value="shipped">Enviado</option>
