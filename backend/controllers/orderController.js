@@ -34,7 +34,11 @@ const placeOrder = async (req, res) => {
   }
 };
 
+const placeOrderMp = async (req, res) => {
+}
 
+const placeOrderStripe = async (req, res) => {
+}
 
 const allOrders = async (req, res) => {
   try {
@@ -49,10 +53,9 @@ const allOrders = async (req, res) => {
 
 const userOrders = async (req, res) => {
   try {
-    const { userId } = req.params;
+    const { userId } = req.body;
     const orders = await orderModel.find({ userId });
-    console.log(`Órdenes obtenidas para el usuario ${userId}:`, orders);
-    res.status(200).json({ success: true, orders });
+    res.json({ success: true, orders });
   } catch (error) {
     console.error("Error al obtener órdenes del usuario:", error);
     res.status(500).json({ success: false, message: 'Error al obtener órdenes del usuario', error: error.message });
@@ -72,4 +75,4 @@ const updateStatus = async (req, res) => {
   }
 };
 
-export { placeOrder, allOrders, userOrders, updateStatus };
+export { placeOrder, placeOrderMp, placeOrderStripe, allOrders, userOrders, updateStatus };
