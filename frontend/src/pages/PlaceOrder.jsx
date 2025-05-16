@@ -67,10 +67,30 @@ const PlaceOrder = () => {
             } else {
               toast.error(stripeResponse.data.message);
             }
-        default:
-          toast.error("Seleccioná un método de pago válido");
-          break;
-        }
+
+  case 'mercadopago':
+    const mpResponse = await axios.post(backendUrl + '/api/order/mercadopago', {
+      ...orderData,
+      email: formData.email,
+    }, {
+      headers: {
+        token,
+        origin: window.location.origin, // importante para los back_urls
+      }
+    });
+
+    if (mpResponse.data.success) {
+      setCartItems({});
+      window.location.href = mpResponse.data.url; // redirige a MercadoPago
+    } else {
+      toast.error(mpResponse.data.message || "Error con MercadoPago");
+    }
+    break;
+
+  default:
+    toast.error("Seleccioná un método de pago válido");
+    break;
+}
       
     } catch (error) {
       console.log(error);

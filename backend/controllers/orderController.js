@@ -1,6 +1,6 @@
 import orderModel from '../models/orderModel.js';
 import userModel from '../models/userModel.js';
-import { MercadoPagoConfig, Order } from 'mercadopago';
+import { MercadoPagoConfig, Preference } from 'mercadopago';
 
 // Global variables
 const currency = 'ARS';
@@ -39,7 +39,78 @@ const placeOrder = async (req, res) => {
 };
 
 const placeOrderMp = async (req, res) => {
-}
+  try {
+    console.log('Origin recibido:', req.headers.origin);
+console.log('Fallback FRONTEND_URL:', process.env.FRONTEND_URL);
+    const { userId, items, amount, address, email } = req.body;
+    const origin = req.headers.origin || process.env.FRONTEND_URL || 'http://localhost:5173';
+
+    const orderData = {
+      userId,
+      items,
+      address,
+      amount,
+      paymentMethod: "MercadoPago",
+      payment: false,
+      date: Date.now(),
+    };
+
+    const newOrder = new orderModel(orderData);
+    await newOrder.save();
+
+    // Configuración de MercadoPago
+    const client = new MercadoPagoConfig({
+      accessToken: process.env.MP_ACCESS_TOKEN,
+    });
+
+    const preference = new Preference(client);
+
+    const itemsMP = items.map((item) => ({
+      title: item.name,
+      quantity: item.quantity,
+      unit_price: item.price,
+      currency_id: 'ARS',
+    }));
+
+    // Agregamos el cargo por delivery como ítem adicional
+    itemsMP.push({
+      title: 'Delivery',
+      quantity: 1,
+      unit_price: 6000,
+      currency_id: 'ARS',
+    });
+console.log("back_urls:", {
+  success: `${origin}/verify?success=true&orderId=${newOrder._id}`,
+  failure: `${origin}/verify?success=false&orderId=${newOrder._id}`,
+  pending: `${origin}/verify?success=pending&orderId=${newOrder._id}`,
+});
+    const body = {
+      items: itemsMP,
+      external_reference: newOrder._id.toString(),
+      payer: {
+        email,
+      },
+      back_urls: {
+        success: `${origin}/verify?success=true&orderId=${newOrder._id}`,
+        failure: `${origin}/verify?success=false&orderId=${newOrder._id}`,
+        pending: `${origin}/verify?success=pending&orderId=${newOrder._id}`,
+      },
+      // auto_return: 'approved',
+    };
+
+    const response = await preference.create({ body });
+
+    res.status(200).json({
+      success: true,
+      url: response.init_point, // este es el link para redireccionar al usuario
+      orderId: newOrder._id,
+    });
+
+  } catch (error) {
+    console.error("Error al crear orden con MP:", error);
+    res.status(500).json({ success: false, message: 'Error al crear orden con MercadoPago', error: error.message });
+  }
+};
 
 const placeOrderStripe = async (req, res) => {
 
