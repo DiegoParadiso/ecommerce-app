@@ -45,7 +45,7 @@ useEffect(() => {
 }, [token]);
 
   return (
-    <div className='border-t pt-16'>
+      <div className='pt-6 mb-4 sm:mb-10'>
       <div>
         <Title text1="MIS" text2="PEDIDOS" />
       </div>

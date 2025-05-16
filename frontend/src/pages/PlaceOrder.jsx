@@ -57,6 +57,16 @@ const PlaceOrder = () => {
             toast.error(response.data.message);
           }
           break;
+          case 'stripe':
+            const stripeResponse = await axios.post(backendUrl + '/api/order/stripe', orderData, {
+              headers: { token },
+            });
+            if (stripeResponse.data.success) {
+              const { session_url } = stripeResponse.data;
+              window.location.replace(session_url);
+            } else {
+              toast.error(stripeResponse.data.message);
+            }
         default:
           toast.error("Seleccioná un método de pago válido");
           break;
@@ -102,6 +112,7 @@ const PlaceOrder = () => {
 <div className="flex flex-wrap gap-3">
   {[
     { id: 'mercadopago', logo: assets.mp_logo },
+    { id: 'stripe', logo: assets.stripe_logo },
     { id: 'transferencia', label: 'TRANSFERENCIA BANCARIA', icon: assets.bank_icon },
     { id: 'efectivo', label: 'EFECTIVO' },
     { id: 'cuotas', label: 'CUOTAS SIN TARJETA DE MERCADOPAGO' },
