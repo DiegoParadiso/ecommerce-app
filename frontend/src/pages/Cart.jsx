@@ -1,11 +1,10 @@
-import React, { useEffect, useState, useContext } from 'react'
-import { ShopContext } from '../context/ShopContext'
+import React, { useEffect, useState, useContext } from 'react';
+import { ShopContext } from '../context/ShopContext';
 import Title from '../components/Title';
 import { assets } from '../assets/assets';
 import CartTotal from '../components/CartTotal';
 
 const Cart = () => {
-  
   const { products, currency, cartItems, updateQuantity, navigate } = useContext(ShopContext);
   const [cartData, setCartData] = useState([]);
 
@@ -27,7 +26,7 @@ const Cart = () => {
   const handleIncrease = (id, stock) => {
     const currentQuantity = cartItems[id];
     if (currentQuantity < stock) {
-      updateQuantity(id, currentQuantity + 1); // Llamamos a la función de actualización
+      updateQuantity(id, currentQuantity + 1);
     }
   };
 
@@ -36,7 +35,7 @@ const Cart = () => {
     if (currentQuantity > 1) {
       updateQuantity(id, currentQuantity - 1);
     } else if (currentQuantity === 1) {
-      updateQuantity(id, 0); // Elimina el producto si la cantidad es 1 y se presiona "-"
+      updateQuantity(id, 0);
     }
   };
 
@@ -50,6 +49,11 @@ const Cart = () => {
         {cartData.map((item, index) => {
           const productData = products.find((product) => product._id === item._id);
 
+          if (!productData) {
+            console.warn("Producto no encontrado para ID:", item._id);
+            return null;
+          }
+
           return (
             <div key={index} className='py-4 border-t border-b text-gray-700 grid grid-cols-[4fr_0.5fr_0.5fr] sm:grid-cols-[4fr_2fr_0.5fr] items-center gap-4'>
               <div className='flex items-start gap-6'>
@@ -61,21 +65,18 @@ const Cart = () => {
                 </div>
               </div>
 
-              {/* Botones para aumentar y disminuir cantidad */}
               <div className="flex items-center gap-4">
                 <button 
                   onClick={() => handleIncrease(item._id, productData.stock)} 
                   className='px-2 py-1 bg-gray-200 text-black rounded-md'
-                  disabled={cartItems[item._id] >= productData.stock}  // Deshabilitar si ya llega al máximo stock
-                >
+                  disabled={cartItems[item._id] >= productData.stock}>
                   +
                 </button>
                 <span className='text-sm'>{item.quantity}</span>
                 <button 
                   onClick={() => handleDecrease(item._id)} 
                   className='px-2 py-1 bg-gray-200 text-black rounded-md'
-                  disabled={cartItems[item._id] === 0}  // Deshabilitar si la cantidad es 0
-                >
+                  disabled={cartItems[item._id] === 0}>
                   -
                 </button>
               </div>
@@ -84,7 +85,7 @@ const Cart = () => {
                 onClick={() => updateQuantity(item._id, 0)} 
                 className='w-4 mr-4 sm:w-5 cursor-pointer' 
                 src={assets.bin_icon} 
-                alt=""
+                alt="Eliminar producto"
               />
             </div>
           );
@@ -103,9 +104,8 @@ const Cart = () => {
           </div>
         </div>
       </div>
-
     </div>
   );
-}
+};
 
 export default Cart;

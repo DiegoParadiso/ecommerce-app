@@ -132,16 +132,15 @@ const PlaceOrder = () => {
 <div className="flex flex-wrap gap-3">
   {[
     { id: 'mercadopago', logo: assets.mp_logo },
-    { id: 'stripe', logo: assets.stripe_logo },
     { id: 'transferencia', label: 'TRANSFERENCIA BANCARIA', icon: assets.bank_icon },
     { id: 'efectivo', label: 'EFECTIVO' },
     { id: 'cuotas', label: 'CUOTAS SIN TARJETA DE MERCADOPAGO' },
-    { id: 'cod', label: 'PAGO CONTRA ENTREGA' } 
   ].map(option => (
     <div
       key={option.id}
       onClick={() => setMethod(option.id)}
-      className={`flex items-center gap-3 border p-2 px-3 cursor-pointer ${method === option.id ? 'border-green-500' : ''}`}
+      className={`flex items-center justify-between border gap-3 p-2 px-3 cursor-pointer transition duration-200 
+        ${method === option.id ? 'border-green-500 bg-green-50' : 'border-gray-200 hover:border-gray-400'}`}
     >
       <p className={`min-w-3.5 h-3.5 border rounded-full ${method === option.id ? 'bg-green-400' : ''}`}></p>
       {option.logo ? (
@@ -157,14 +156,15 @@ const PlaceOrder = () => {
     </div>
   ))}
 </div>
+        </div>
+        
 
           {/* Botón de enviar */}
-          <div className='w-full text-end mt-8'>
-            <button type='submit' className='bg-black text-white px-16 py-3 text-sm'>
+          <div className='w-full mt-8'>
+            <button type='submit' className='w-full bg-black text-white px-16 py-3 text-sm'>
               REALIZAR ORDEN
             </button>
           </div>
-        </div>
       </div>
     </form>
   );
