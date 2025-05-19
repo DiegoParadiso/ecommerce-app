@@ -38,7 +38,7 @@ const statusHandler = async (event, orderId) => {
     );
     if (response.data.success) {
       await fetchAllOrders();
-    }
+    }  
   } catch (error) {
     toast.error(error.message);
   }
@@ -77,16 +77,16 @@ const statusHandler = async (event, orderId) => {
             <div>
               <p className='text-sm sm:text-[15px] pb-5'>Items: {order.items.length}</p>
               <p>Método de pago: {order.paymentMethod}</p>
-              <p>Estado: {order.payment ? 'pagado' : 'Pendiente'}</p>
+              <p>Pago: {order.payment ? 'Pagado' : 'Pendiente'}</p>
               <p>Fecha: {new Date(order.date).toLocaleDateString()}</p>
             </div>
             <p className='text-sm sm:text-[15px]'>{currency}{order.amount}</p>
             <select onChange={(e)=>statusHandler(e,order._id)} value={order.status} className='font-semibold p-2'>
-             <option value="order placed">Pendiente</option>
-              <option value="packing">Pendiente</option>
-              <option value="shipped">Enviado</option>
-              <option value="out for delivery">para retirar</option>
-              <option value="delivered">entregado</option>
+<option value="orden tomada">Orden tomada</option>
+<option value="preparando">Preparando</option>
+<option value="enviado">Enviado</option>
+<option value="para retirar">Para retirar</option>
+<option value="entregado">Entregado</option>
             </select>
           </div>
         ))}

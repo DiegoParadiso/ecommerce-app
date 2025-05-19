@@ -44,6 +44,14 @@ useEffect(() => {
   loadOrderData();
 }, [token]);
 
+const statusMap = {
+  'orden tomada': 'Orden tomada',
+  'preparando': 'Preparando',
+  'enviado': 'Enviado',
+  'para retirar': 'Para retirar',
+  'entregado': 'Entregado'
+};
+
   return (
       <div className='pt-6 mb-4 sm:mb-10'>
       <div>
@@ -69,7 +77,7 @@ useEffect(() => {
               <div className='md:w-1/2 flex justify-between'>
                 <div className='flex gap-2 items-center'>
                   <p className='min-w-2 h-2 rounded-full bg-green-500'></p>
-                  <p className='text-sm'>Listo para el envío</p>
+                  <p className='text-sm'>{statusMap[item.status] || 'Estado desconocido'}</p>
                 </div>
                 <button onClick={loadOrderData} className='border px-4 py-2 rounded-sm'>Seguir el envío</button>
               </div>
