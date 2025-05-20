@@ -1,5 +1,5 @@
 import express from 'express';
-import { placeOrder, placeOrderMp, placeOrderStripe, allOrders, userOrders, updateStatus } from '../controllers/orderController.js';
+import { placeOrder, placeOrderMp, placeOrderStripe, allOrders, userOrders, updateStatus, verifyOrderPayment } from '../controllers/orderController.js';
 import adminAuth from '../middleware/adminAuth.js';
 import authUser from '../middleware/auth.js';
 
@@ -16,5 +16,7 @@ orderRouter.post('/userorders', authUser, userOrders);
 // Admin: todas las órdenes y actualizar estado
 orderRouter.post('/list', adminAuth, allOrders);
 orderRouter.post('/status', adminAuth, updateStatus);
+orderRouter.get('/verify', verifyOrderPayment);
+
 
 export default orderRouter;

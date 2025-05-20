@@ -111,7 +111,25 @@ console.log("back_urls:", {
     res.status(500).json({ success: false, message: 'Error al crear orden con MercadoPago', error: error.message });
   }
 };
+const verifyOrderPayment = async (req, res) => {
+  try {
+    const { success, orderId } = req.query;
 
+    if (success === 'true' && orderId) {
+      await orderModel.findByIdAndUpdate(orderId, {
+        payment: true,
+        status: 'pagado',
+      });
+      return res.json({ success: true, message: 'Orden actualizada como pagada' });
+    }
+
+    res.status(400).json({ success: false, message: 'Datos inválidos' });
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, message: 'Error del servidor' });
+  }
+};
 const placeOrderStripe = async (req, res) => {
 
   try{
@@ -198,4 +216,4 @@ const updateStatus = async (req, res) => {
   }
 };
 
-export { placeOrder, placeOrderMp, placeOrderStripe, allOrders, userOrders, updateStatus };
+export { placeOrder, placeOrderMp, placeOrderStripe, verifyOrderPayment, allOrders, userOrders, updateStatus };
