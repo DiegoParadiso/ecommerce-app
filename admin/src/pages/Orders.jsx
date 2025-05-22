@@ -12,7 +12,7 @@ const Orders = ({ token }) => {
 
     try {
       const response = await axios.post(
-        backendUrl + '/api/order/list',
+        `${backendUrl}/api/order/list`,
         {},
         { headers: { token } }
       );
@@ -27,22 +27,21 @@ const Orders = ({ token }) => {
     }
   };
 
-
-const statusHandler = async (event, orderId) => {
-  const newStatus = event.target.value;
-  try {
-    const response = await axios.post(
-      backendUrl + '/api/order/status',
-      { orderId, status: newStatus },
-      { headers: { token } }
-    );
-    if (response.data.success) {
-      await fetchAllOrders();
-    }  
-  } catch (error) {
-    toast.error(error.message);
-  }
-};
+  const statusHandler = async (event, orderId) => {
+    const newStatus = event.target.value;
+    try {
+      const response = await axios.post(
+        `${backendUrl}/api/order/status`,
+        { orderId, status: newStatus },
+        { headers: { token } }
+      );
+      if (response.data.success) {
+        await fetchAllOrders();
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
 
   useEffect(() => {
     fetchAllOrders();
@@ -55,25 +54,22 @@ const statusHandler = async (event, orderId) => {
         {orders.map((order, index) => (
           <div key={index} className="grid grid-cols-1 sm:grid-cols-[0.5fr_2fr_1fr] lg:grid-cols-[0.5fr_2fr_1fr_1fr_1fr] gap-3 items-start border-2 border-gray-200 p-5 md:p-8 my-3 md:my-4 text-xs text-gray-700">
             <img src={assets.parcel_icon} alt="" className='w-12' />
-
             <div>
-              <div> {order.items.map((item, idx) => {
-                if(idx === order.items.length - 1) {
-                  return <p className='py-0.5' key={idx}>{item.name} x {item.quantity}</p>
-                }else{
-                  return <p className='py-0.5' key={idx}>{item.name} x {item.quantity},</p>
-                }
-              })}
+              <div>
+                {order.items.map((item, idx) => (
+                  <p className='py-0.5' key={idx}>
+                    {item.name} x {item.quantity}{idx < order.items.length - 1 ? ',' : ''}
+                  </p>
+                ))}
               </div>
-            <p className='mt-3 mb-2 font-medium'>{order.address.firstName + " " + order.address.lastName}</p>
-            <div>
-              <p>{order.address.street + ","}</p>
-              <p>{order.address.city + ", " + order.address.state + ", " + order.address.cp}</p>
-              <p>{order.address.country}</p>
+              <p className='mt-3 mb-2 font-medium'>{order.address.firstName} {order.address.lastName}</p>
+              <div>
+                <p>{order.address.street},</p>
+                <p>{order.address.city}, {order.address.state}, {order.address.cp}</p>
+                <p>{order.address.country}</p>
+                <p>{order.address.phone}</p>
+              </div>
             </div>
-
-            <p>{order.address.phone}</p>
-</div>
             <div>
               <p className='text-sm sm:text-[15px] pb-5'>Items: {order.items.length}</p>
               <p>Método de pago: {order.paymentMethod}</p>
@@ -81,12 +77,12 @@ const statusHandler = async (event, orderId) => {
               <p>Fecha: {new Date(order.date).toLocaleDateString()}</p>
             </div>
             <p className='text-sm sm:text-[15px]'>{currency}{order.amount}</p>
-            <select onChange={(e)=>statusHandler(e,order._id)} value={order.status} className='font-semibold p-2'>
-<option value="orden tomada">Orden tomada</option>
-<option value="preparando">Preparando</option>
-<option value="enviado">Enviado</option>
-<option value="para retirar">Para retirar</option>
-<option value="entregado">Entregado</option>
+            <select onChange={(e) => statusHandler(e, order._id)} value={order.status} className='font-semibold p-2'>
+              <option value="orden tomada">Orden tomada</option>
+              <option value="preparando">Preparando</option>
+              <option value="enviado">Enviado</option>
+              <option value="para retirar">Para retirar</option>
+              <option value="entregado">Entregado</option>
             </select>
           </div>
         ))}

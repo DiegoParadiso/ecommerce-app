@@ -80,8 +80,10 @@ import binancepay_logo from './binancepay_logo.png'
 import uala_logo from './uala_logo.png'
 import cuentadni_logo from './cuentadni_logo.svg'
 import modo_logo from './modo_logo.png'
+import icon from './icon.png'
 
 export const assets = {
+    icon,
     logo,
     hero_img1,
     hero_img2,
